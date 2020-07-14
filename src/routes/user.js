@@ -15,6 +15,10 @@ router.get('/user/:id', verifyToken, (req, res, next) => {
     UserController.getUserById(req, res, next)
 })
 
+router.get('/user', verifyToken, (req, res, next) => {
+    UserController.getUserById(req, res, next)
+})
+
 router.post('/user', verifyToken, (req, res, next) => {
     UserController.createUser(req, res, next)
 })

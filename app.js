@@ -1,12 +1,22 @@
 import express from 'express';
+import session from 'express-session';
+import redis from 'redis';
+const redisStore = require('connect-redis')(session);
+const client  = redis.createClient();
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
-import path from 'path';
+// import path from 'path';
 
 const app = express();
 dotenv.config();
 // Middleware
+app.use(session({
+  secret: '5c539542c5f33a5cbe00eb71265e1ba3',
+  store: new redisStore({ host: 'localhost', port: 6379, client: client, ttl : 260}),
+  saveUninitialized: true,
+  resave: true
+}));
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());

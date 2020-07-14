@@ -27,7 +27,7 @@ const unsubscribeUser = async (id) => {
 }
 
 const login = async (user, password) => {
-    return await pool.query(`SELECT * FROM users WHERE username = '${user}' AND password = md5('${password}')`)
+    return await pool.query(`SELECT id, username, name, last_name, dni, email, admin FROM users WHERE username = '${user}' AND password = md5('${password}')`)
 }
 
 module.exports = {
