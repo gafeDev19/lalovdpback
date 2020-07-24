@@ -12,6 +12,7 @@ const getUsers = async (req, res, next) => {
 }
 
 const getUserById = async (req, res, next) => {
+    console.log(req.session)
     const userId = req.params.hasOwnProperty('id') ? req.params.id :  req.session.user.id
 
     try {
