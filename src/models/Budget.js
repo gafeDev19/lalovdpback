@@ -2,7 +2,7 @@ const pool = require('../config/dbConn')
 import BudgetDetail from './BudgetProduct'
 
 const getAll = async () => {
-    return await pool.query('SELECT * FROM budgets ORDER BY id ASC;')
+    return await pool.query("SELECT id, to_char(date,'DD/MM/YYYY') as date, seller, customer, city, address, total, user_id FROM budgets ORDER BY id DESC;")
 }
 
 const getById = async (id) => {
@@ -75,6 +75,7 @@ const deleteBudget = async (id) => {
     try {
         await client.query('BEGIN')
         
+        let deleteOrder = await pool.query(`DELETE FROM orders WHERE budget_id = ${id};`)
         let deleteDetail = await pool.query(`DELETE FROM budgets_products WHERE budget_id = ${id};`)
         let deleteBudget = await client.query(`DELETE FROM budgets WHERE id = ${id};`)
         
