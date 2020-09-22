@@ -2,7 +2,8 @@ const pool = require('../config/dbConn')
 import Status from './Status'
 
 const getAll = async () => {
-    return await pool.query('SELECT o.*, s.description AS status_alias FROM orders o INNER JOIN status s ON o.status_id = s.id ORDER BY o.id DESC;')
+    return await pool.query('select b.id as budget_id, b.date, b.customer, b.total, o.id as order_id, o.budget_id as budget_order, o.date, o.status_id, o.comment, o.tracking_number from budgets b  left join orders o on o.budget_id = b.id')
+    //return await pool.query('SELECT o.*, s.description AS status_alias FROM orders o INNER JOIN status s ON o.status_id = s.id ORDER BY o.id DESC;')
 }
 
 const getById = async (id) => {

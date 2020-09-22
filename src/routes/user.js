@@ -27,6 +27,10 @@ router.put('/user/:id', (req, res, next) => {
     UserController.updateUser(req, res, next)
 })
 
+router.put('/user-changepass/:id', (req, res, next) => {
+    UserController.changePass(req, res, next)
+})
+
 router.delete('/user/:id', verifyToken, (req, res, next) => {
     UserController.unsubscribeUser(req, res, next)
 })
