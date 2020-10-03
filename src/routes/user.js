@@ -15,12 +15,20 @@ router.get('/user/:id', verifyToken, (req, res, next) => {
     UserController.getUserById(req, res, next)
 })
 
+router.get('/user', verifyToken, (req, res, next) => {
+    UserController.getUserById(req, res, next)
+})
+
 router.post('/user', verifyToken, (req, res, next) => {
     UserController.createUser(req, res, next)
 })
 
 router.put('/user/:id', (req, res, next) => {
     UserController.updateUser(req, res, next)
+})
+
+router.put('/user-changepass/:id', (req, res, next) => {
+    UserController.changePass(req, res, next)
 })
 
 router.delete('/user/:id', verifyToken, (req, res, next) => {

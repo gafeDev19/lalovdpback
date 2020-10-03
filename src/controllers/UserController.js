@@ -12,13 +12,14 @@ const getUsers = async (req, res, next) => {
 }
 
 const getUserById = async (req, res, next) => {
-    const userId = req.params.id
+    console.log(req.session)
+    const userId = req.params.hasOwnProperty('id') ? req.params.id :  req.session.user.id
 
     try {
         const response = await User.getById(userId)
         res.status(200).json(response.rows)
         next()
-    } catch (e) {
+    } catch (error) {
         res.sendStatus(500) && next(error)
     }
 }
@@ -82,11 +83,63 @@ const createUser = async (req, res, next) => {
         })
         next()
     } catch (e) {
-        res.sendStatus(500) && next(error)
+        res.sendStatus(500) && next(e)
     }
 }
 
 const updateUser = async (req, res, next) => {
+    const id = req.params.id
+    const params = req.body
+    
+    //Validations
+    if (!("username" in params)) {
+        return res.status(400).json({
+            message: 'El nombre de usuario es obligatorio.'
+        }) && next()
+    } else {
+        if (params.username === '' || params.username === null || params.username === 'null') {
+            return res.status(400).json({
+                message: 'El nombre de usuario es obligatorio.'
+            }) && next()
+        }
+    }
+
+    if (!("name" in params)) {
+        return res.status(400).json({
+            message: 'El nombre es obligatorio.'
+        }) && next()
+    } else {
+        if (params.name === '' || params.name === null || params.name === 'null') {
+            return res.status(400).json({
+                message: 'El nombre es obligatorio.'
+            }) && next()
+        }
+    }
+
+    if (!("last_name" in params)) {
+        return res.status(400).json({
+            message: 'El apellido es obligatorio.'
+        }) && next()
+    } else {
+        if (params.last_name === '' || params.last_name === null || params.last_name === 'null') {
+            return res.status(400).json({
+                message: 'El apelllido es obligatorio.'
+            }) && next()
+        }
+    }
+
+    try {
+        const response = await User.update(id, params)
+        res.status(200).json({
+            message: 'Usuario actualizado.'
+        })
+        next()
+    } catch (e) {
+        res.sendStatus(500) && next(e)
+    }
+}
+
+const changePass = async (req, res, next) => {
     const id = req.params.id
     const params = req.body
 
@@ -104,7 +157,7 @@ const updateUser = async (req, res, next) => {
     }
 
     try {
-        const response = await User.update(id, params)
+        const response = await User.changePass(id, params)
         res.status(200).json({
             message: 'Contraseña actualizada.'
         })
@@ -144,6 +197,7 @@ const login = async (req, res, next) => {
         }
 
         const token = jwtHelper.generateToken(response.rows[0].id);
+        req.session.user = response.rows[0];
         return res.status(200).send({ token });
     } catch (error) {
         return res.status(400).send(error)
@@ -155,6 +209,7 @@ module.exports = {
     getUserById,
     createUser,
     updateUser,
+    changePass,
     unsubscribeUser,
     login
 }
