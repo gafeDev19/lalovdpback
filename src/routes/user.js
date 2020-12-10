@@ -23,11 +23,11 @@ router.post('/user', verifyToken, (req, res, next) => {
     UserController.createUser(req, res, next)
 })
 
-router.put('/user/:id', (req, res, next) => {
+router.put('/user/:id', verifyToken, (req, res, next) => {
     UserController.updateUser(req, res, next)
 })
 
-router.put('/user-changepass/:id', (req, res, next) => {
+router.put('/user-changepass/:id', verifyToken, (req, res, next) => {
     UserController.changePass(req, res, next)
 })
 
