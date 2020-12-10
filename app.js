@@ -1,21 +1,27 @@
+const https = require('https')
+const fs = require('fs')
 import express from 'express';
 import session from 'express-session';
 import redis from 'redis';
-const redisStore = require('connect-redis')(session);
 const client  = redis.createClient();
+const redisStore = require('connect-redis')(session);
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 // import path from 'path';
 
 const app = express();
 dotenv.config();
 // Middleware
+app.use(cookieParser());
 app.use(session({
   secret: '5c539542c5f33a5cbe00eb71265e1ba3',
-  store: new redisStore({ host: 'localhost', port: 6379, client: client, ttl : 260}),
-  saveUninitialized: true,
-  resave: true
+  name: '_redisLalo',
+  store: new redisStore({ host: '127.0.0.1', port: 6379, client: client, ttl : 604800}),
+  saveUninitialized: false,
+  resave: false,
+  cookie: { secure: true, maxAge: 604800000, domain: 'lalovdp' }
 }));
 app.use(morgan('tiny'));
 app.use(cors());
@@ -27,11 +33,6 @@ app.use('/api', require('./src/routes/user'))
 app.use('/api', require('./src/routes/product'))
 app.use('/api', require('./src/routes/budget'))
 app.use('/api', require('./src/routes/order'))
-
-// Middleware para Vue.js router modo history
-// const history = require('connect-history-api-fallback');
-// app.use(history());
-// app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), () => {

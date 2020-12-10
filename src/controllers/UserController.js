@@ -12,8 +12,7 @@ const getUsers = async (req, res, next) => {
 }
 
 const getUserById = async (req, res, next) => {
-    console.log(req.session)
-    const userId = req.params.hasOwnProperty('id') ? req.params.id :  req.session.user.id
+    const userId = req.params.hasOwnProperty('id') ? req.params.id : req.session.user.id
 
     try {
         const response = await User.getById(userId)
@@ -197,8 +196,11 @@ const login = async (req, res, next) => {
         }
 
         const token = jwtHelper.generateToken(response.rows[0].id);
-        req.session.user = response.rows[0];
-        return res.status(200).send({ token });
+        const userProfile = response.rows[0];
+        req.session.jwt = token;
+        req.session.user = user;
+        
+        return res.status(200).send({ token, user: userProfile });
     } catch (error) {
         return res.status(400).send(error)
     }
