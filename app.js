@@ -34,6 +34,16 @@ app.use('/api', require('./src/routes/product'))
 app.use('/api', require('./src/routes/budget'))
 app.use('/api', require('./src/routes/order'))
 
+//Handle production
+if(process.env.NODE_ENV === 'production') {
+  //Static folder
+  app.use(express.static(__dirname + '/public'))
+
+  // Handle SPA
+  app.get(/.*/)
+}
+
+
 app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), () => {
   console.log(`Lalo VDP app listening on ${app.get('port')}`)
