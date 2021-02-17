@@ -198,8 +198,8 @@ const login = async (req, res, next) => {
 
         const token = jwtHelper.generateToken(response.rows[0].id);
         const userProfile = response.rows[0];
-        req.session.jwt = token;
-        req.session.user = user;
+        // req.session.jwt = token;
+        // req.session.user = user;
         
         return res.status(200).send({ token, user: userProfile });
     } catch (error) {
