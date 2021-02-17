@@ -190,6 +190,7 @@ const login = async (req, res, next) => {
     
     try {
         const response = await User.login(user, password);
+        console.log('Response' + response)
         
         if (!response.rows[0]) {
             return res.status(400).send({ 'message': 'Las credenciales ingresadas son incorrectas.' });
@@ -202,6 +203,7 @@ const login = async (req, res, next) => {
         
         return res.status(200).send({ token, user: userProfile });
     } catch (error) {
+        console.log('Error' + error)
         return res.status(400).send(error)
     }
 }
