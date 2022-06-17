@@ -3,6 +3,7 @@ import Budget from '../models/Budget'
 const getBudgets = async (req, res, next) => {
     try {
         const response = await Budget.getAll()
+        console.log("Budgets => ", response)
         res.status(200).json(response.rows)
         next()
     } catch (e) {
