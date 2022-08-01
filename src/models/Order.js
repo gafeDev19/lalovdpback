@@ -15,7 +15,8 @@ const getAll = async () => {
             o.comment as order_comment,
             o.tracking_number as order_tracking_number
         from budgets b  left join orders o on o.budget_id = b.id
-        order by b.id desc`)
+        order by b.id desc
+        limit 1000`)
     //return await pool.query('SELECT o.*, s.description AS status_alias FROM orders o INNER JOIN status s ON o.status_id = s.id ORDER BY o.id DESC;')
 }
 

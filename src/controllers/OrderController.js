@@ -3,7 +3,8 @@ import Order from '../models/Order'
 const getOrders = async (req, res, next) => {
     try {
         const response = await Order.getAll()
-        console.log("Orders => ", response)
+        console.log("1000 Orders => ")
+        console.log(response.rows)
         res.status(200).json(response.rows)
         next()
     } catch (e) {

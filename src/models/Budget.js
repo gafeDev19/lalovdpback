@@ -2,7 +2,7 @@ const pool = require('../config/dbConn')
 import BudgetDetail from './BudgetProduct'
 
 const getAll = async () => {
-    return await pool.query("SELECT id, to_char(date,'DD/MM/YYYY') as date, seller, customer, city, address, total, user_id FROM budgets ORDER BY id DESC;")
+    return await pool.query("SELECT id, to_char(date,'DD/MM/YYYY') as date, seller, customer, city, address, total, user_id FROM budgets ORDER BY id DESC LIMIT 1000;")
 }
 
 const getById = async (id) => {
